@@ -4,65 +4,12 @@ import { Text, View, StyleSheet } from 'react-native';
 import { NavigationContainer } from '@react-navigation/native';
 import { createMaterialBottomTabNavigator } from '@react-navigation/material-bottom-tabs';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
-//import LiveScreen from './src/live';
+import { BleManager } from 'react-native-ble-plx';
+import HomeScreen from './src/home';
+import HistoryScreen from './src/history';
+import LiveScreen from './src/live';
+import SettingsScreen from './src/settings';
 
-
-
-
-
-function HomeScreen() {
-  return (
-    <View style={styles.background}>
-      <View style={styles.displayBox1}>
-        <Text style={styles.displayBoxTitle}>Hourly Range</Text>
-        <Text style={styles.displayBoxDataText}>10 &deg;</Text>
-      </View>
-      <View style={styles.displayBox1}>
-        <Text style={styles.displayBoxTitle}>Daily Range</Text>
-        <Text style={styles.displayBoxDataText}>8 &deg;</Text>
-      </View>
-      <View style={styles.displayBox1}>
-        <Text style={styles.displayBoxTitle}>Weekly Range</Text>
-        <Text style={styles.displayBoxDataText}>9 &deg;</Text>
-      </View>
-    </View>
-  );
-}
-
-function HistoryScreen() {
-  return (
-    <View style={styles.background}>
-      <Text>History!</Text>
-    </View>
-  );
-}
-
-
-function LiveScreen() {
-  return (
-    <View style={styles.background}>
-      <View style={styles.graphBox}>
-        <Text>Dosiflexion curve will go here.</Text>
-      </View>
-      <View style={styles.displayBox2}>
-        <Text style={styles.displayBoxTitle}>Live Range</Text>
-        <Text style={styles.displayBoxDataText}>9 &deg;</Text>
-      </View>
-      <View style={styles.settingsBoxToggle}>
-        <Text>Live audio feedback?</Text>
-      </View>
-    </View>
-  );
-}
-
-
-function SettingsScreen() {
-  return (
-    <View style={styles.background}>
-      <Text>Settings!</Text>
-    </View>
-  );
-}
 
 const Tab = createMaterialBottomTabNavigator();
 
