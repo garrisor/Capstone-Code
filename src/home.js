@@ -4,7 +4,7 @@ import { Text, View, StyleSheet } from 'react-native';
 
 var styles = require('./styles');
 
-export default function HomeScreen2() {
+export default function HomeScreen() {
   return (
     <View style={styles.background}>
       <View style={styles.displayBox1}>

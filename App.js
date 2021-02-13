@@ -7,7 +7,7 @@ import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityI
 import { BleManager } from 'react-native-ble-plx';
 import HomeScreen from './src/home';
 import HistoryScreen from './src/history';
-import LiveScreen from './src/live';
+import LiveScreen from './src/livev2';
 import SettingsScreen from './src/settings';
 
 
