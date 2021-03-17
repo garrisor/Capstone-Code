@@ -130,7 +130,7 @@ async setupNotifications(device) {
       })
     }
   }
-  render() { //rendeer results
+  render() { //render results
     return (
       <View>
         <Text>{this.state.info}</Text>
