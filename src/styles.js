@@ -43,6 +43,14 @@ module.exports = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
   },
+  displayBox3: {
+    width: '75%',
+    height: '10%',
+    borderRadius: 25,
+    backgroundColor: '#ffffff',
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
   graphBox: {
     width: '80%',
     height: '40%',

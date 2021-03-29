@@ -15,30 +15,33 @@ import DatePicker from 'react-native-datepicker'
 var styles = require('./styles');
 SQLite.DEBUG(true);
 
+
 export default class History extends Component {
   constructor(props){
     super(props);
     this.state = {
       count: 0,
-      data_array: [],
-      date:"2016-05-15"
+      data_array: [1,10,-5,2,0],
+      start_date: '2021-03-01',
+      end_date: '2021-03-02',
+      example1: 1,
     }
-    this.db = SQLite.openDatabase({name: "ankle.db", createFromLocation : 1}, this.successDB, this.failDB);
+    this.db = SQLite.openDatabase({name: "ankle2.db", createFromLocation : 1}, this.successDB, this.failDB);
   }
 
 
   successDB = () => {
     this.db.transaction(tx => {
-      tx.executeSql('SELECT * FROM dummy_data', [], (tx,results) => {
+      tx.executeSql('SELECT field2 FROM dorsiflexion_data WHERE strftime("%Y-%m-%d %H:%M:%S.%f", field1) BETWEEN date(?) AND date(?)', [this.state.start_date, this.state.end_date], (tx,results) => {
         let datalength = results.rows.length;
         let temp_array =[];
         if (datalength > 0) {
           for (let i = 0; i < datalength; i++) {
-            temp_array.push(results.rows.item(i));
+            temp_array.push(Object.values(results.rows.item(i)));
           }
-
+          console.log(temp_array)
           this.setState({
-            count: datalength,
+            count: datalength/100,
             data_array: temp_array
           });
         }
@@ -46,19 +49,6 @@ export default class History extends Component {
     });
   }
 
-
-/*
-  successDB = () => {
-    this.db.transaction(tx => {
-      tx.executeSql('INSERT INTO sample_data (time_point, data_point) VALUES (),(),(),(); SELECT * FROM sample_data', [], (tx,results) => {
-        let datalength = results.rows.length;
-        this.setState({
-          count: datalength
-        })
-      }, this.failSQL);
-    });
-  }
-  */
 
   failDB = (err) => {
     this.setState({
@@ -83,44 +73,29 @@ export default class History extends Component {
   render() {
       return (
         <View style={styles.background}>
-          <LineChart
+          <LineChart withInnerLines={false}
             data={{
-              labels: ["M", "T", "W", "T", "F", "S", "S"],
+              labels: ['0%','25%','50%','75%','100%'],
               datasets: [
                 {
-                  data: [
-                    Math.random() * 10,
-                    Math.random() * 10,
-                    Math.random() * 10,
-                    Math.random() * 10,
-                    Math.random() * 10,
-                    Math.random() * 10
-                  ]
+                  data: this.state.data_array //[0,1,2,3,4,5,4,3,2,1,0,-1,-2,-1,0,1,0,-1,0]
                 }
               ]
             }}
             width={Dimensions.get("window").width} // from react-native
             height={300}
-            yAxisLabel=""
-            yAxisSuffix=""
             yAxisInterval={1} // optional, defaults to 1
             chartConfig={{
               backgroundColor: "#ffffff",
               backgroundGradientFrom: "#ffffff",
               backgroundGradientTo: "#ffffff",
-              decimalPlaces: 2, // optional, defaults to 2dp
-              color: (opacity = 1) => `rgba(0, 0, 0, ${opacity})`,
-              labelColor: (opacity = 1) => `rgba(0, 0, 0, ${opacity})`,
-              style: {
-                borderRadius: 16
-              },
-              propsForDots: {
-                r: "6",
-                strokeWidth: "2",
-                stroke: "#0384fc"
-              }
+              decimalPlaces: 2, // number of dps
+              color: (opacity = 1) => `rgba(0, 0, 0, ${opacity})`, //curve color
+              labelColor: (opacity = 1) => `rgba(0, 0, 0, ${opacity})`, //axis color
+              propsForDots: {r: "0"}, //dot size
+              propsForBackgroundLines: {strokeDasharray: ""}, //removes grid lines
+              fillShadowGradient: "#ffffff"//shaded area under curve color
             }}
-            bezier
             style={{
               marginVertical: 8,
               borderRadius: 16
@@ -128,31 +103,67 @@ export default class History extends Component {
           />
 
 
-      <DatePicker
-        style={{width: 200}}
-        date={this.state.date}
-        mode="date"
-        placeholder="select date"
-        format="YYYY-MM-DD"
-        minDate="2016-05-01"
-        maxDate="2016-06-01"
-        confirmBtnText="Confirm"
-        cancelBtnText="Cancel"
-        customStyles={{
-          dateIcon: {
-            position: 'absolute',
-            left: 0,
-            top: 4,
-            marginLeft: 0
-          },
-          dateInput: {
-            marginLeft: 36
-          }
-          // ... You can check the source to find the other keys.
-        }}
-        onDateChange={(date) => {this.setState({date: date})}}
-      />
+      <View style={styles.displayBox3}>
+        <Text>Start Date</Text>
+        <DatePicker
+          style={{width: 200}}
+          date={new Date()}
+          mode="date"
+          placeholder="select date"
+          format="YYYY-MM-DD"
+          minDate="2021-01-01"
+          maxDate={new Date()}
+          confirmBtnText="Confirm"
+          cancelBtnText="Cancel"
+          customStyles={{
+            dateIcon: {
+              position: 'absolute',
+              left: 0,
+              top: 4,
+              marginLeft: 0
+            },
+            dateInput: {
+              marginLeft: 36
+            }
+          }}
+          onDateChange={(date) => {this.setState({start_date: date})}}
+        />
       </View>
+
+      <View style={styles.displayBox3}>
+        <Text>End Date</Text>
+        <DatePicker
+          style={{width: 200}}
+          date={new Date()}
+          mode="date"
+          placeholder="select date"
+          format="YYYY-MM-DD"
+          minDate={this.state.start_date}
+          maxDate={new Date()}
+          confirmBtnText="Confirm"
+          cancelBtnText="Cancel"
+          customStyles={{
+            dateIcon: {
+              position: 'absolute',
+              left: 0,
+              top: 4,
+              marginLeft: 0
+            },
+            dateInput: {
+              marginLeft: 36
+            }
+          }}
+          onDateChange={(date) => {this.setState({end_date: date})}}
+        />
+      </View>
+
+
+        <View style={styles.displayBox3}>
+            <Text style={styles.displayBoxTitle}>{this.state.count} rows</Text>
+        </View>
+
+      </View>
+
       );
   }
 }
